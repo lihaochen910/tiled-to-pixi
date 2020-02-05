@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tilemap Test</title>
+    <script type="text/javascript" src="js/pixi.js"></script>
+    <script type="text/javascript" src="js/pixi-tilemap.js"></script>
+    <script type="text/javascript" src="js/bundle.js"></script>
+</head>
+<body>
+<script>
+
+	const renderer = PIXI.autoDetectRenderer ( 816, 624 );
+	document.body.appendChild ( renderer.view );
+
+	const root = new PIXI.Container ();
+	let deltaTime = 0;
+
+	PIXI.loader
+		.add ( [
+			'assets/maps/map001.json',
+			'assets/maps/map002.json',
+			'assets/maps/map003.json',
+			'assets/maps/map004.json',
+			'assets/img/tilesets/mm1_gnd_world.png',
+			'assets/img/tilesets/mm1_locate_general.png'
+        ] )
+		.load ( function () {
+            /**
+             *   PIXI.tilemap.TiledMap() is an extended PIXI.Container()
+             *   so you can render it right away
+             */
+            let tileMap = new PIXI.tilemap.TiledMap ( 'assets/maps/map004.json' );
+
+			root.addChild ( tileMap );
+
+			let speedX = -1500;
+			let speedY = 1500;
+
+			PIXI.ticker.shared.add ( ( delta ) => {
+				deltaTime = delta / 100.0;
+				renderer.render ( root );
+			}, window );
+
+			document.addEventListener ( 'keydown', ( event ) => {
+				if ( event.key == 'w' ) {
+					tileMap.position.set (
+						tileMap.position.x,
+						tileMap.position.y + speedY * deltaTime
+					);
+				}
+				if ( event.key == 's' ) {
+					tileMap.position.set (
+						tileMap.position.x,
+						tileMap.position.y - speedY * deltaTime
+					);
+				}
+				if ( event.key == 'a' ) {
+					tileMap.position.set (
+						tileMap.position.x - speedX * deltaTime,
+						tileMap.position.y
+					);
+				}
+				if ( event.key == 'd' ) {
+					tileMap.position.set (
+						tileMap.position.x + speedX * deltaTime,
+						tileMap.position.y
+					);
+				}
+			} );
+            
+			document.onwheel = ( e ) => {
+				const value = e.deltaY > 0 && -5.0 || 5.0;
+				tileMap.scale.set ( tileMap.scale.x + value * deltaTime );
+            };
+        } );
+
+</script>
+</body>
+</html>

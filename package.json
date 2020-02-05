@@ -1,0 +1,33 @@
+{
+  "name": "tiled-to-pixi",
+  "version": "0.1.0",
+  "description": "Transforms a Tiled tmx map to a Pixi container with all the sprites loaded",
+  "main": "src/TiledMap.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "browserify -d src/TiledMap.js -o test/js/bundle.js && node test/server.js",
+    "dev": "watchify src/TiledMap.js -o test/js/bundle.js --delay 0 -v -d",
+    "build": "browserify src/TiledMap.js -o dist/tiled-to-pixi.js && cp dist/tiled-to-pixi.js /Users/Kanbaru/OneDrive/文档/RMProject/js/libs/tiled-to-pixi.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lihaochen910/tiled-to-pixi.git"
+  },
+  "author": "Kanbaru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lihaochen910/tiled-to-pixi/issues"
+  },
+  "homepage": "https://github.com/lihaochen910/tiled-to-pixi#readme",
+  "dependencies": {
+    "path": "^0.12.7",
+    "pixi.js": "^4.8.8",
+    "pixi-tilemap": "^2.0.3"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "browserify": "^16.5.0"
+  }
+}
