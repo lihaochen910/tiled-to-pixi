@@ -5,6 +5,7 @@
     <title>Tilemap Test</title>
     <script type="text/javascript" src="js/pixi.js"></script>
     <script type="text/javascript" src="js/pixi-tilemap.js"></script>
+    <script type="text/javascript" src="js/fpsmeter.js"></script>
     <script type="text/javascript" src="js/bundle.js"></script>
 </head>
 <body>
@@ -13,6 +14,9 @@
 	const renderer = PIXI.autoDetectRenderer ( 816, 624 );
 	document.body.appendChild ( renderer.view );
 
+	let fpsMeter = new FPSMeter ( { graph: 1, decimals: 0, theme: 'transparent', toggleOn: null } );
+	fpsMeter.show ();
+	
 	const root = new PIXI.Container ();
 	let deltaTime = 0;
 
@@ -39,7 +43,10 @@
 
 			PIXI.ticker.shared.add ( ( delta ) => {
 				deltaTime = delta / 100.0;
+
+				fpsMeter.tickStart ();
 				renderer.render ( root );
+				fpsMeter.tick ();
 			}, window );
 
 			document.addEventListener ( 'keydown', ( event ) => {

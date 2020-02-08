@@ -8,6 +8,10 @@ const ObjectLayer = require ( './ObjectLayer' );
 const GroupLayer = require ( './GroupLayer' );
 const CollisionLayer = require ( './CollisionLayer' );
 
+// configure constants to switch it off and use 16 textures directly, without re-uploading
+PIXI.tilemap.Constant.boundCountPerBuffer = 1;
+PIXI.tilemap.Constant.maxTextures = 16;
+
 class TiledMap extends PIXI.Container {
 
 	constructor ( resourceId ) {
@@ -58,18 +62,20 @@ class TiledMap extends PIXI.Container {
 
 	setupDataLayers ( data, route ) {
 		
+		let layerIndex = 0;
+		
 		this.layers = {};
 		data.layers.forEach ( function ( layerData ) {
 			switch ( layerData.type ) {
 				case 'tilelayer':
 					let tileLayer = new TileLayer ( layerData, this );
 					this.layers[ layerData.name ] = tileLayer;
-					this.addLayer ( tileLayer );
+					this.addLayer ( tileLayer, layerIndex );
 					break;
 				case 'imagelayer':
 					let imageLayer = new ImageLayer ( layerData, route );
 					this.layers[ layerData.name ] = imageLayer;
-					this.addLayer ( imageLayer );
+					this.addLayer ( imageLayer, layerIndex );
 					break;
 				case 'objectgroup':
 					let objLayer = new ObjectLayer ( layerData );
@@ -82,10 +88,14 @@ class TiledMap extends PIXI.Container {
 				default:
 					this.layers[ layerData.name ] = layerData
 			}
+			
+			layerIndex++;
 		}, this );
 	}
 
-	addLayer ( layer ) {
+	addLayer ( layer, layerIndex ) {
+		// let zLayer = new PIXI.tilemap.ZLayer ( this, layerIndex );
+		// zLayer.addChild ( layer );
 		this.addChild ( layer );
 	}
 	
