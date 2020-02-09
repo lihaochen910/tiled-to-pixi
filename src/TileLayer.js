@@ -2,11 +2,7 @@ const zlib = require ( 'zlib' );
 const Tile = require ( './Tile' );
 
 class TileLayer extends PIXI.tilemap.CompositeRectTileLayer {
-
-	static FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-	static FLIPPED_VERTICALLY_FLAG = 0x40000000;
-	static FLIPPED_DIAGONALLY_FLAG = 0x20000000;
-
+	
 	/**
 	 * X coordinate where layer content starts (for infinite maps)
 	 *
@@ -309,6 +305,10 @@ class TileLayer extends PIXI.tilemap.CompositeRectTileLayer {
 		this.tiles[ y * this.map.width + x ] = tile;
 	}
 }
+
+TileLayer.FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+TileLayer.FLIPPED_VERTICALLY_FLAG = 0x80000000;
+TileLayer.FLIPPED_DIAGONALLY_FLAG = 0x80000000;
 
 function findTileSet ( gid, tileSets ) {
 	let tileSet;
